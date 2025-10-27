@@ -8,7 +8,7 @@ def start_display():
     pygame.init()
     infoObject = pygame.display.Info()
 
-    # Match screen size dynamically
+    # Match your display resolution (portrait)
     screen_width, screen_height = infoObject.current_w, infoObject.current_h
     screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 
@@ -21,27 +21,22 @@ def start_display():
                 pygame.quit()
                 sys.exit()
 
-        screen.fill((0, 0, 0))  # black background
+        screen.fill((0, 0, 0))  # Black background
 
-        screen_width, screen_height = screen.get_size()
-        center_x = screen_width // 2
+        # 🪞 Create a container surface for all widgets
+        mirror_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 
-        # --- Clock ---
-        clock_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
-        draw_clock(clock_surface, font)
-        clock_rect = clock_surface.get_rect(center=(center_x, screen_height // 2 - 120))
-        screen.blit(clock_surface, clock_rect)
+        # Draw widgets as usual on the mirror surface
+        draw_clock(mirror_surface, font)
+        draw_calendar(mirror_surface, font)
+        draw_weather(mirror_surface, font)
 
-        # --- Calendar ---
-        calendar_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
-        draw_calendar(calendar_surface, font)
-        calendar_rect = calendar_surface.get_rect(center=(center_x, screen_height // 2 - 50))
-        screen.blit(calendar_surface, calendar_rect)
+        # 🧭 Calculate offsets to center the entire layout
+        layout_rect = mirror_surface.get_rect()
+        offset_x = (screen_width - layout_rect.width) // 2
+        offset_y = (screen_height - layout_rect.height) // 2
 
-        # --- Weather ---
-        weather_surface = pygame.Surface((screen_width, 120), pygame.SRCALPHA)
-        draw_weather(weather_surface, font)
-        weather_rect = weather_surface.get_rect(center=(center_x, screen_height // 2 + 40))
-        screen.blit(weather_surface, weather_rect)
+        # Blit the mirror surface centered on the screen
+        screen.blit(mirror_surface, (offset_x, offset_y))
 
         pygame.display.flip()
