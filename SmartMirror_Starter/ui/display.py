@@ -8,7 +8,7 @@ def start_display():
     pygame.init()
     infoObject = pygame.display.Info()
 
-    # Make sure we match your display size dynamically
+    # Match screen size dynamically
     screen_width, screen_height = infoObject.current_w, infoObject.current_h
     screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 
@@ -16,32 +16,27 @@ def start_display():
     font = pygame.font.SysFont(None, 48)
 
     while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-    screen.fill((0, 0, 0))  # black background
+        screen.fill((0, 0, 0))  # black background
 
-    screen_width, screen_height = screen.get_size()
-    center_x = screen_width // 2
+        screen_width, screen_height = screen.get_size()
+        center_x = screen_width // 2
 
-    # --- Clock ---
-    clock_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
-    draw_clock(clock_surface, font)
-    clock_rect = clock_surface.get_rect(center=(center_x, screen_height // 2 - 120))
-    screen.blit(clock_surface, clock_rect)
+        # --- Clock ---
+        clock_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
+        draw_clock(clock_surface, font)
+        clock_rect = clock_surface.get_rect(center=(center_x, screen_height // 2 - 120))
+        screen.blit(clock_surface, clock_rect)
 
-    # --- Calendar ---
-    calendar_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
-    draw_calendar(calendar_surface, font)
-    calendar_rect = calendar_surface.get_rect(center=(center_x, screen_height // 2 - 50))
-    screen.blit(calendar_surface, calendar_rect)
+        # --- Calendar ---
+        calendar_surface = pygame.Surface((screen_width, 100), pygame.SRCALPHA)
+        draw_calendar(calendar_surface, font)
+        calendar_rect = calendar_surface.get_rect(center=(center_x, screen_height // 2 - 50))
+        screen.blit(calendar_surface, calendar_rect)
 
-    # --- Weather ---
-    weather_surface = pygame.Surface((screen_width, 120), pygame.SRCALPHA)
-    draw_weather(weather_surface, font)
-    weather_rect = weather_surface.get_rect(center=(center_x, screen_height // 2 + 40))
-    screen.blit(weather_surface, weather_rect)
-
-    pygame.display.flip()
+        # --- Weather ---
+        wea
