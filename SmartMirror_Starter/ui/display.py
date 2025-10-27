@@ -39,4 +39,9 @@ def start_display():
         screen.blit(calendar_surface, calendar_rect)
 
         # --- Weather ---
-        wea
+        weather_surface = pygame.Surface((screen_width, 120), pygame.SRCALPHA)
+        draw_weather(weather_surface, font)
+        weather_rect = weather_surface.get_rect(center=(center_x, screen_height // 2 + 40))
+        screen.blit(weather_surface, weather_rect)
+
+        pygame.display.flip()
