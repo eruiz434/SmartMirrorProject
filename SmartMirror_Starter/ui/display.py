@@ -40,3 +40,4 @@ def start_display():
         screen.blit(mirror_surface, (offset_x, offset_y))
 
         pygame.display.flip()
+                                
