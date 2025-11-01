@@ -20,24 +20,31 @@ def start_display():
     y_offset = screen_height // 4     # centers vertically
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-        screen.fill((0, 0, 0))  # black background
+    screen.fill((0, 0, 0))  # black background
 
-        # Move entire layout down/right from the top-left corner
-        mirror_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
-        mirror_surface.blit(screen, (0, 0))
+    screen_width, screen_height = screen.get_size()
 
-        # Apply the offset to all widget drawings
-        temp_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
-        draw_clock(temp_surface, font)
-        draw_calendar(temp_surface, font)
-        draw_weather(temp_surface, font)
+    # Create a temporary surface where widgets are drawn
+    temp_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 
-        # Blit everything shifted to the center area
-        screen.blit(temp_surface, (x_offset, y_offset))
+    # Draw widgets as usual
+    draw_clock(temp_surface, font)
+    draw_calendar(temp_surface, font)
+    draw_weather(temp_surface, font)
 
-        pygame.display.flip()
+    # --- Calculate bounding box of all non-black pixels (to find actual content size) ---
+    temp_rect = temp_surface.get_bounding_rect()
+
+    # --- Compute exact centered position ---
+    centered_x = (screen_width - temp_rect.width) // 2
+    centered_y = (screen_height - temp_rect.height) // 2
+
+    # --- Blit the area containing your widgets centered on screen ---
+    screen.blit(temp_surface, (centered_x - temp_rect.x, centered_y - temp_rect.y))
+
+    pygame.display.flip()
