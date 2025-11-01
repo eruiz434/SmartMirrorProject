@@ -12,8 +12,11 @@ def start_display():
     screen_width, screen_height = infoObject.current_w, infoObject.current_h
     screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 
-    pygame.display.set_caption("Smart Mirror")
-    font = pygame.font.SysFont(None, 48)
+    pygame.display.set_caption("SFSU Smart Mirror")
+
+    # ✏️ Font sizes
+    title_font = pygame.font.SysFont(None, 80)   # big header
+    main_font = pygame.font.SysFont(None, 56)    # larger for clock/date/weather
 
     while True:
         for event in pygame.event.get():
@@ -23,24 +26,27 @@ def start_display():
 
         screen.fill((0, 0, 0))  # black background
 
-        screen_width, screen_height = screen.get_size()
+        # Draw header text
+        title_text = title_font.render("SFSU Smart Mirror", True, (255, 255, 255))
+        title_rect = title_text.get_rect(center=(screen_width // 2, 80))
+        screen.blit(title_text, title_rect)
 
-        # Create a surface where widgets are drawn
+        # Create a surface for all widgets
         temp_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 
-        # Draw widgets as usual
-        draw_clock(temp_surface, font)
-        draw_calendar(temp_surface, font)
-        draw_weather(temp_surface, font)
+        # Draw widgets
+        draw_clock(temp_surface, main_font)
+        draw_calendar(temp_surface, main_font)
+        draw_weather(temp_surface, main_font)
 
-        # --- Calculate bounding box of all non-black pixels ---
+        # Get bounding box for all drawn content
         temp_rect = temp_surface.get_bounding_rect()
 
-        # --- Compute exact centered position ---
+        # Compute centered position
         centered_x = (screen_width - temp_rect.width) // 2
-        centered_y = (screen_height - temp_rect.height) // 2
+        centered_y = (screen_height - temp_rect.height) // 2 + 40  # shifted slightly down
 
-        # --- Blit the content block centered on screen ---
+        # Draw the widget block centered on screen
         screen.blit(temp_surface, (centered_x - temp_rect.x, centered_y - temp_rect.y))
 
         pygame.display.flip()
