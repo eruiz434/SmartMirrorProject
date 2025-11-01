@@ -15,8 +15,8 @@ def start_display():
     pygame.display.set_caption("SFSU Smart Mirror")
 
     # ✏️ Font sizes
-    title_font = pygame.font.SysFont(None, 80)   # big header
-    main_font = pygame.font.SysFont(None, 56)    # larger for clock/date/weather
+    title_font = pygame.font.SysFont(None, 80)    # title text
+    main_font = pygame.font.SysFont(None, 72)     # larger font for clock/date/weather
 
     while True:
         for event in pygame.event.get():
@@ -26,27 +26,25 @@ def start_display():
 
         screen.fill((0, 0, 0))  # black background
 
-        # Draw header text
+        # --- Draw Header ---
         title_text = title_font.render("SFSU Smart Mirror", True, (255, 255, 255))
-        title_rect = title_text.get_rect(center=(screen_width // 2, 80))
+        title_rect = title_text.get_rect(center=(screen_width // 2, 90))
         screen.blit(title_text, title_rect)
 
-        # Create a surface for all widgets
+        # --- Draw main widgets onto a temporary surface ---
         temp_surface = pygame.Surface((screen_width, screen_height), pygame.SRCALPHA)
 
-        # Draw widgets
         draw_clock(temp_surface, main_font)
         draw_calendar(temp_surface, main_font)
         draw_weather(temp_surface, main_font)
 
-        # Get bounding box for all drawn content
+        # --- Find bounding box for all widgets ---
         temp_rect = temp_surface.get_bounding_rect()
 
-        # Compute centered position
+        # --- Compute centered position slightly lower than title ---
         centered_x = (screen_width - temp_rect.width) // 2
-        centered_y = (screen_height - temp_rect.height) // 2 + 40  # shifted slightly down
+        centered_y = (screen_height - temp_rect.height) // 2 + 60  # move down a little below title
 
-        # Draw the widget block centered on screen
         screen.blit(temp_surface, (centered_x - temp_rect.x, centered_y - temp_rect.y))
 
         pygame.display.flip()
