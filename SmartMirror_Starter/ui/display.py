@@ -40,7 +40,7 @@ def start_display():
         content_rect = temp_surface.get_bounding_rect()
 
         # Center all widgets together below the title
-        group_y = title_rect.bottom + 100  # space under the title
+        group_y = title_rect.bottom + 1000  # space under the title
         centered_x = (screen_width - content_rect.width) // 2
         screen.blit(
             temp_surface,
